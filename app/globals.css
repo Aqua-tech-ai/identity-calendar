@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './styles/admin.css';
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900;
+  min-height: 100vh;
+  font-family: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+}
+
+a {
+  @apply text-primary hover:underline;
+}
+
+/* FullCalendar ボタンのスタイル微調整（フォント依存なし） */
+.fc .fc-toolbar .fc-button {
+  min-width: 2.25rem;
+  height: 2.25rem;
+  line-height: 2.25rem;
+  padding: 0 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fc .fc-toolbar .fc-button .fc-icon {
+  display: none;
+}

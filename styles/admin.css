@@ -1,0 +1,78 @@
+/* カード風セクション */
+.admin-card {
+  @apply rounded-xl border border-slate-200 bg-white shadow-sm;
+}
+
+/* カードタイトル */
+.admin-card-title {
+  @apply mb-2 text-base font-semibold text-slate-900;
+}
+
+/* 説明テキスト */
+.admin-card-desc {
+  @apply text-sm text-slate-600;
+}
+
+/* ボタン */
+.btn {
+  @apply inline-flex items-center justify-center rounded-md border px-3 py-1.5 text-sm font-medium transition;
+}
+.btn-ghost {
+  @apply border-slate-300 bg-white text-slate-700 hover:bg-slate-50;
+}
+.btn-primary {
+  @apply border-transparent bg-slate-900 text-white hover:bg-slate-800;
+}
+.btn-danger {
+  @apply border-red-300 bg-red-50 text-red-700 hover:bg-red-100;
+}
+.btn-soft {
+  @apply border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200;
+}
+
+/* バッジ */
+.badge {
+  @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium;
+}
+.badge-available {
+  @apply bg-emerald-100 text-emerald-700;
+}
+.badge-booked {
+  @apply bg-indigo-100 text-indigo-700;
+}
+.badge-blocked {
+  @apply bg-rose-100 text-rose-700;
+}
+
+/* テーブル */
+.table {
+  @apply min-w-full text-sm;
+}
+.table thead {
+  @apply bg-slate-50 text-slate-600;
+}
+.table th {
+  @apply px-3 py-2 text-left font-semibold;
+}
+.table td {
+  @apply px-3 py-2;
+}
+.table tbody tr {
+  @apply hover:bg-slate-50 transition;
+}
+.table tbody tr:nth-child(even) {
+  @apply bg-slate-50/40;
+}
+
+/* 入力 */
+.input {
+  @apply w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/10;
+}
+.label {
+  @apply mb-1 block text-sm font-medium text-slate-700;
+}
+
+/* セクション見出し */
+.h-section {
+  @apply text-lg font-semibold text-slate-900;
+}

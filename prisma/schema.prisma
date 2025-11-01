@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Slot {
+  id        String   @id @default(cuid())
+  startAt   DateTime
+  endAt     DateTime
+  status    String   @default("available")
+  createdAt DateTime @default(now())
+  isPaidSlot Boolean  @default(false)
+  booking   Booking?
+
+  @@unique([startAt, endAt])
+}
+
+model Booking {
+  id          String   @id @default(cuid())
+  slotId      String
+  slot        Slot     @relation(fields: [slotId], references: [id])
+  bookingType String   @default("PRACTICE")
+  playerName  String
+  discordId   String
+  identityVId String   @default("") // 第五人格ID（必須）。既存データ保護のため default "" を設定
+  notes       String?
+  status      String   @default("CONFIRMED")
+  isPaid      Boolean  @default(false)
+  cancelToken String   @default(uuid())
+  createdAt   DateTime @default(now())
+
+  @@unique([slotId])
+}

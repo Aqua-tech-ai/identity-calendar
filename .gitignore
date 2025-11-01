@@ -1,0 +1,8 @@
+# ビルド成果物／依存関係
+node_modules
+.next
+
+# 環境変数ファイル（サンプル除外）
+.env
+.env.*
+!.env.example

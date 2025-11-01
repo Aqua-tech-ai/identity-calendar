@@ -1,0 +1,1 @@
+export default function robots() {\n  const isPreview = process.env.VERCEL_ENV === 'preview' || process.env.NODE_ENV !== 'production';\n  return isPreview\n    ? { rules: [{ userAgent: '*', disallow: '/' }] }\n    : { rules: [{ userAgent: '*', allow: '/' }] };\n}\n
