@@ -1,17 +1,23 @@
 'use client';
 
+import type { Route } from 'next';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
-export default function AdminLoginPage() {
+function AdminLoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const params = useSearchParams();
-  const callbackUrl = params.get('callbackUrl') || '/admin';
+  const callbackUrlParam = params.get('callbackUrl');
+  const fallbackRoute = '/admin' as Route;
+  const callbackUrl: Route =
+    callbackUrlParam && callbackUrlParam.startsWith('/')
+      ? (callbackUrlParam as Route)
+      : fallbackRoute;
 
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -75,5 +81,19 @@ export default function AdminLoginPage() {
         </button>
       </form>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-[60vh] flex items-center justify-center">
+          <p>読み込み中…</p>
+        </div>
+      }
+    >
+      <AdminLoginForm />
+    </Suspense>
   );
 }

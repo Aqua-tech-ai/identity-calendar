@@ -157,7 +157,6 @@ export async function POST(req: NextRequest) {
         status: "available",
         isPaidSlot,
       })),
-      skipDuplicates: true,
     });
   }
 

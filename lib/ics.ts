@@ -1,4 +1,5 @@
 import { createEvent } from 'ics';
+import type { EventAttributes } from 'ics';
 
 interface IcsOptions {
   startAt: Date;
@@ -19,7 +20,7 @@ function toUtcComponents(date: Date): [number, number, number, number, number] {
 }
 
 export function generateIcs(options: IcsOptions): string {
-  const event = {
+  const event: EventAttributes = {
     start: toUtcComponents(options.startAt),
     end: toUtcComponents(options.endAt),
     title: options.summary,
@@ -27,6 +28,8 @@ export function generateIcs(options: IcsOptions): string {
     url: options.url,
     startInputType: 'utc',
     endInputType: 'utc',
+    startOutputType: 'utc',
+    endOutputType: 'utc',
   };
 
   const { error, value } = createEvent(event);

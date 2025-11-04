@@ -567,7 +567,7 @@ export default function AdminDashboard() {
   }
 
   async function handleDeleteSlot(slot: Pick<AdminSlot, "id" | "status">) {
-    const hasBooking = slot.status !== "available" && slot.status !== "空き枠";
+    const hasBooking = slot.status !== "available";
     const ok = confirm(
       hasBooking
         ? "この枠には予約が入っています。予約と枠をまとめて削除します。よろしいですか？"
@@ -1034,7 +1034,7 @@ export default function AdminDashboard() {
                 className="btn btn-secondary"
                 onClick={() => setSelectedSlot(null)}
               >
-                "閉じる"
+                {"\"閉じる\""}
               </button>
                 <button
                   type="button"

@@ -1,1 +1,17 @@
-export default function robots() {\n  const isPreview = process.env.VERCEL_ENV === 'preview' || process.env.NODE_ENV !== 'production';\n  return isPreview\n    ? { rules: [{ userAgent: '*', disallow: '/' }] }\n    : { rules: [{ userAgent: '*', allow: '/' }] };\n}\n
+import type { MetadataRoute } from 'next'
+
+export default function robots(): MetadataRoute.Robots {
+  const base =
+    process.env.NEXTAUTH_URL ??
+    process.env.APP_BASE_URL ??
+    'https://identity-calendar.vercel.app'
+
+  return {
+    rules: {
+      userAgent: '*',
+      allow: '/',
+    },
+    sitemap: `${base}/sitemap.xml`,
+    host: base,
+  }
+}

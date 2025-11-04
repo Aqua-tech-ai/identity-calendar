@@ -59,7 +59,7 @@ const normalizeWeekdays = (value: unknown): number[] =>
         })
         .filter(
           (entry): entry is number =>
-            Number.isInteger(entry) && entry >= 0 && entry <= 6,
+            entry !== null && Number.isInteger(entry) && entry >= 0 && entry <= 6,
         )
     : [];
 

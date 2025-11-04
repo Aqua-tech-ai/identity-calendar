@@ -13,6 +13,7 @@ type BulkSlotInput = Pick<
   'weekdayMask' | 'startTime' | 'endTime' | 'durationMin' | 'rangeStart' | 'rangeEnd' | 'isPaidSlot'
 >;
 
+type BookingWithSlot = Prisma.BookingGetPayload<{ include: { slot: true } }>;
 const TOKYO_TIMEZONE = 'Asia/Tokyo';
 
 function parseWeekdayMask(mask: number[]): Set<number> {
@@ -85,11 +86,11 @@ export async function createBooking(input: CreateBookingInput) {
 }
 
 export async function cancelBookingByToken(token: string): Promise<{
-  booking: Booking & { slot: Slot };
+  booking: BookingWithSlot;
   changed: boolean;
 }> {
   return prisma.$transaction(async (tx) => {
-    const booking = await tx.booking.findUnique({
+    const booking = await tx.booking.findFirst({
       where: { cancelToken: token },
       include: { slot: true },
     });
@@ -98,21 +99,26 @@ export async function cancelBookingByToken(token: string): Promise<{
       throw new NotFoundError('Booking not found');
     }
 
-    if (booking.status === 'canceled' || booking.status === 'CANCELLED') {
-      return { booking, changed: false };
+    const bookingWithSlot = booking as BookingWithSlot;
+
+    if (bookingWithSlot.status === 'canceled' || bookingWithSlot.status === 'CANCELLED') {
+      return { booking: bookingWithSlot, changed: false };
     }
 
     await tx.booking.update({
-      where: { id: booking.id },
+      where: { id: bookingWithSlot.id },
       data: { status: 'CANCELLED' },
     });
 
     await tx.slot.update({
-      where: { id: booking.slotId },
+      where: { id: bookingWithSlot.slotId },
       data: { status: 'available' },
     });
 
-    return { booking: { ...booking, status: 'CANCELLED' }, changed: true };
+    return {
+      booking: { ...bookingWithSlot, status: 'CANCELLED' } as BookingWithSlot,
+      changed: true,
+    };
   });
 }
 
@@ -150,7 +156,6 @@ export async function bulkCreateSlots(input: BulkSlotInput) {
 
   const result = await prisma.slot.createMany({
     data: slots,
-    skipDuplicates: true,
   });
 
   return { count: result.count };
@@ -197,7 +202,7 @@ export async function listSlotsWithBooking(range?: {
 }
 
 export async function findBookingByCancelToken(token: string) {
-  return prisma.booking.findUnique({
+  return prisma.booking.findFirst({
     where: { cancelToken: token },
     include: { slot: true },
   });

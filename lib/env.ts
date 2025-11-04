@@ -64,6 +64,7 @@ const EnvSchema = z
     ADMIN_PASSWORD: optionalString,
     ADMIN_PASSWORD_HASH: optionalBcrypt,
     ADMIN_BCRYPT_ROUNDS: z.coerce.number().int().min(4).max(15).optional(),
+    TZ: optionalString,
   })
   .superRefine((value, ctx) => {
     const hasHash = !!value.ADMIN_PASSWORD_HASH;
@@ -110,4 +111,5 @@ export const {
   ADMIN_PASSWORD,
   ADMIN_PASSWORD_HASH,
   ADMIN_BCRYPT_ROUNDS,
+  TZ,
 } = Env;

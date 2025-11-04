@@ -10,6 +10,10 @@ type BookingSuccessPayload = {
   isPaidSlot: boolean;
   requiresPayment: boolean;
   paidSlotPrice?: number;
+  webhook?: {
+    ok?: boolean;
+    reason?: string;
+  };
 };
 
 type Props = {
