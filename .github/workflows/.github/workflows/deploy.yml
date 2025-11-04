@@ -1,0 +1,39 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [ "main" ]   # ← デプロイしたいブランチ
+  workflow_dispatch:       # 手動トリガーも可
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Node のバージョンは package.json の "engines" やローカル環境に合わせて
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      # Vercel 上の環境変数を取得して .vercel/.env.production.local に書き出す
+      - name: Pull Vercel Env
+        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      # Production ビルドを作る（Next.js をローカルでビルド）
+      - name: Build
+        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      # できたビルドを本番にデプロイ
+      - name: Deploy to Production
+        run: npx vercel deploy --prebuilt --prod \
+             --token=${{ secrets.VERCEL_TOKEN }} \
+             --org ${{ secrets.VERCEL_ORG_ID }} \
+             --project ${{ secrets.VERCEL_PROJECT_ID }}
