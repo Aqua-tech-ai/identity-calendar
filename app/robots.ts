@@ -7,10 +7,7 @@ export default function robots(): MetadataRoute.Robots {
     'https://identity-calendar.vercel.app'
 
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-    },
+    rules: { userAgent: '*', allow: '/' },
     sitemap: `${base}/sitemap.xml`,
     host: base,
   }
